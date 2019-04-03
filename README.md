@@ -15,3 +15,6 @@ java -DPORT=2554 -Dconfig.resource=/worker.conf -jar target/scala-2.12/wordCount
 java -DPORT=2555 -Dconfig.resource=/worker.conf -jar target/scala-2.12/wordCount.jar
 ```
 Unit test to test the word count and the cluster can be found in the test folder.
+
+## Author
+* **Antonio Maldonado**
