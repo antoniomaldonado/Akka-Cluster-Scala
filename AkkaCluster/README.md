@@ -5,7 +5,7 @@ This examples are for learning purpose
 This package contains some examples that show how akka streams are the base for akka HTTP and akka TCP.
 
 ### Akka Cluster:
-Akka cluster that that creates a configurable amount of master and workers to count the words in a file. 
+Akka cluster that creates a configurable amount of masters and workers to count the words in a file. 
 * Create the jar file with the command `sbt assembly`
 * To run the cluster. Open four terminals and execute the following commands.
 

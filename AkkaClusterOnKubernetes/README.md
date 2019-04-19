@@ -3,8 +3,7 @@ This examples are for learning purpose
 
 ### Akka Cluster on kubernetes:
 Akka cluster that that creates a configurable amount of master and workers to count words.
-* Create the jar file with the command `sbt assembly`
-* To run the cluster. Open four terminals and execute the following commands.
+This Cluster can be run on a kubernetes cluster.
 
 ### How to run it
 Todo
