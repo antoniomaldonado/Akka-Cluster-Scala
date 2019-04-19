@@ -27,7 +27,7 @@ kubectl apply -f kubernetes/etcd.yaml
 ```
 - Deploy your app
 ```
-kubectl apply -f kubernetes/nothotdog.yaml
+kubectl apply -f kubernetes/wordcount.yaml
 ```
 #### How to run it on kubernetes (Cloud account)
 ***Todo***
