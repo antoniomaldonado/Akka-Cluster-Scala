@@ -1,5 +1,5 @@
 # Akka-Scala
-This examples are for learning purpose. It is a word count example to be run locally.
+This examples are for learning purpose.
 
 ### Akka Http and Streams:
 This package contains some examples that show how akka streams are the base for akka HTTP and akka TCP.
