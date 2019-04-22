@@ -1,6 +1,6 @@
 # Akka Cluster on Kubernetes:
-Akka cluster that that creates a configurable amount of master and workers to count words.
-This Cluster can be run on a kubernetes cluster.
+Akka cluster that creates a configurable amount of master and workers to count words.
+This akka cluster can be run on a kubernetes cluster.
 
 #### How to run it on kubernetes (Minikube locally)
 
