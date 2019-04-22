@@ -33,11 +33,6 @@ kubectl apply -f kubernetes/wordcount.yaml
 Follow the same steps 1 and 2
 
 ***Step 3 - Deploying on gcloud***
-```
-gcloud builds submit --tag gcr.io/{Project ID}/{dockerhub namespace}/etcd .
-```
-```
-gcloud builds submit --tag gcr.io/{Project ID}/{dockerhub namespace}/akka-cluster .
-```
+***TODO***
 ## Author
 * **Antonio Maldonado**
