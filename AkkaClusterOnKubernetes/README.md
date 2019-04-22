@@ -1,6 +1,6 @@
 # Akka Cluster on Kubernetes:
 Akka cluster that creates a configurable amount of master and workers to count words.
-This akka cluster can be run on a kubernetes cluster.
+This Cluster can be run on a kubernetes cluster.
 
 #### How to run it on kubernetes (Minikube locally)
 
@@ -30,7 +30,14 @@ kubectl apply -f kubernetes/etcd.yaml
 kubectl apply -f kubernetes/wordcount.yaml
 ```
 #### How to run it on kubernetes (Cloud account)
-***Todo***
+Follow the same steps 1 and 2
 
+***Step 3 - Deploying on gcloud***
+```
+gcloud builds submit --tag gcr.io/{Project ID}/{dockerhub namespace}/etcd .
+```
+```
+gcloud builds submit --tag gcr.io/{Project ID}/{dockerhub namespace}/akka-cluster .
+```
 ## Author
 * **Antonio Maldonado**
