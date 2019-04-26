@@ -1,4 +1,4 @@
-apiVersion: apps/v1
+apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
   name: wordcount
@@ -10,38 +10,38 @@ spec:
         app: wordcount
     spec:
       containers:
-      - name: akka-cluster
-        image: freakymaster/akka-cluster
-        imagePullPolicy: Always
-        env:
-        - name: POD_IP
-          valueFrom:
-            fieldRef:
-              fieldPath: status.podIP
-        - name: CLUSTER_ROLES
-          value: wordcount
-        ports:
-        - containerPort: 8080
-        - containerPort: 2551
-        resources:
-          requests:
-            cpu: 0.3
-            memory: 256Mi
-          limits:
-            cpu: 0.4
-            memory: 512Mi
-        livenessProbe:
-          httpGet:
-            path: /health
-            port: 8080
-          initialDelaySeconds: 30
-          timeoutSeconds: 2
-        readinessProbe:
-          httpGet:
-            path: /health
-            port: 8080
-          initialDelaySeconds: 15
-          timeoutSeconds: 20
+        - name: akka-cluster
+          image: freakymaster/akka-cluster
+          imagePullPolicy: Always
+          env:
+          - name: POD_IP
+            valueFrom:
+              fieldRef:
+                fieldPath: status.podIP
+          - name: CLUSTER_ROLES
+            value: wordcount
+          ports:
+          - containerPort: 8080
+          - containerPort: 2551
+          resources:
+            requests:
+              cpu: 0.2
+              memory: 256Mi
+            limits:
+              cpu: 0.3
+              memory: 512Mi
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 10
+            timeoutSeconds: 20
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 30
+            timeoutSeconds: 40
 ---
 kind: Service
 apiVersion: v1
@@ -55,7 +55,7 @@ spec:
       port: 8080
       targetPort: 8080
 ---
-apiVersion: apps/v1
+apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
   name: master
@@ -81,23 +81,23 @@ spec:
             - containerPort: 2551
           resources:
             requests:
-              cpu: 0.1
-              memory: 128Mi
-            limits:
               cpu: 0.2
               memory: 256Mi
+            limits:
+              cpu: 0.3
+              memory: 512Mi
           readinessProbe:
             tcpSocket:
               port: 2551
-            initialDelaySeconds: 5
-            periodSeconds: 10
+            initialDelaySeconds: 10
+            periodSeconds: 20
           livenessProbe:
             tcpSocket:
               port: 2551
-            initialDelaySeconds: 15
-            periodSeconds: 20
+            initialDelaySeconds: 30
+            periodSeconds: 40
 ---
-apiVersion: apps/v1
+apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
   name: worker
@@ -123,18 +123,18 @@ spec:
         - containerPort: 2551
         resources:
           requests:
-            cpu: 0.1
-            memory: 128Mi
-          limits:
             cpu: 0.2
             memory: 256Mi
+          limits:
+            cpu: 0.3
+            memory: 512Mi
         readinessProbe:
           tcpSocket:
             port: 2551
-          initialDelaySeconds: 5
-          periodSeconds: 10
+          initialDelaySeconds: 10
+          periodSeconds: 20
         livenessProbe:
           tcpSocket:
             port: 2551
-          initialDelaySeconds: 15
-          periodSeconds: 20
+          initialDelaySeconds: 30
+          periodSeconds: 40

@@ -30,9 +30,22 @@ kubectl apply -f kubernetes/etcd.yaml
 kubectl apply -f kubernetes/wordcount.yaml
 ```
 #### How to run it on kubernetes (Cloud account)
+
 Follow the same steps 1 and 2
 
-***Step 3 - Deploying on gcloud***
-***TODO***
+***Step 3 - Create the cluster on gcloud***
+- Stop minikube, you will deal now with gcloud. 
+```
+gcloud container clusters create {lowercase only name of your cluster} --num-nodes=4
+```
+***Step 4: Deploy your application***
+- Deploy etcd
+```
+kubectl apply -f kubernetes/etcd.yaml
+```
+- Deploy your app
+```
+kubectl apply -f kubernetes/wordcount.yaml
+```
 ## Author
 * **Antonio Maldonado**
