@@ -2,7 +2,7 @@
 Akka cluster that creates a configurable amount of master and workers to count words.
 This akka cluster can be run on a kubernetes cluster.
 
-#### How to run it on kubernetes (Minikube locally)
+## How to run it on kubernetes (Minikube locally)
 
 ***Step 1 - Installing***
 - If you don't have a Dockerhub account, create one. If you don't have Docker, Minikube and kubectl installed, go install it! 
@@ -29,7 +29,17 @@ kubectl apply -f kubernetes/etcd.yaml
 ```
 kubectl apply -f kubernetes/wordcount.yaml
 ```
-#### How to run it on kubernetes (Cloud account)
+***Test the app***
+
+We need the Ip of the wordcount pod
+```
+kubectl get services
+```
+Now we can test the app with a curl command
+```
+curl "http://{ip of the wordcount pod}:8080/?msg=startProcessing"
+```
+## How to run it on kubernetes (Cloud account)
 
 Follow the same steps 1 and 2
 
@@ -46,6 +56,16 @@ kubectl apply -f kubernetes/etcd.yaml
 - Deploy your app
 ```
 kubectl apply -f kubernetes/wordcount.yaml
+```
+***Test the app***
+
+We need the Ip of the wordcount pod
+```
+kubectl get services
+```
+Now we can test the app with a curl command
+```
+curl "http://{ip of the wordcount pod}:8080/?msg=startProcessing"
 ```
 ## Author
 * **Antonio Maldonado**

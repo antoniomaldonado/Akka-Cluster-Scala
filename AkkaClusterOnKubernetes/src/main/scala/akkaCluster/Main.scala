@@ -48,7 +48,7 @@ object SimpleClusterApp extends App {
 
   }
 
-    if (cluster.selfRoles.contains("wordcounter")) {
+    if (cluster.selfRoles.contains("wordcount")) {
     val counterRouter = system.actorOf(
       ClusterRouterGroup(
         RoundRobinGroup(Nil),
@@ -59,9 +59,9 @@ object SimpleClusterApp extends App {
           useRole = Some("master")
         )
       ).props(),
-      name = "counterRouter")
+      name = "masterRouter")
 
-    val wordCounter = system.actorOf(WordCounter.props(counterRouter), name = "wordcounter")
+    val wordCounter = system.actorOf(WordCounter.props(counterRouter), name = "wordcount")
 
     val route =
       path("") {
