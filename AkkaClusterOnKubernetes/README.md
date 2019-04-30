@@ -21,6 +21,10 @@ docker build -t {dockerhub namespace}/akka-cluster .
 docker push {dockerhub namespace}/akka-cluster
 ```
 ***Step 3 - Deploying on Minikube***
+- Start minikube
+```
+minikube start
+```
 - Deploy etcd
 ```
 kubectl apply -f kubernetes/etcd.yaml
@@ -35,13 +39,13 @@ We don't have a external IP to curl minikube by default but thre is a easy worka
 ```
 kubectl run bounce --image=freakymaster/debug -it bash
 ```
-We also need to know the IP of the wordcount pod
+We also need to know the IP of the wordcount service
 ```
 kubectl get services
 ```
 Now we can test the app with a curl command from our debug pod. We need to pass as a message the url containing the book containing the words that we want to count. In this case I ll pass the book Pride and prejudice.
 ```
-curl "http://{IP of the wordcount pod}:8080/?msg=http://localhost:8080/?msg=https://www.gutenberg.org/files/1342/1342-0.txt"
+curl "http://{IP of the wordcount pod}:8080/?msg=https://www.gutenberg.org/files/1342/1342-0.txt"
 ```
 log the wordcount pod
 ```
@@ -73,13 +77,13 @@ kubectl apply -f kubernetes/wordcount.yaml
 ```
 ***Test the app***
 
-We need the IP of the wordcount pod
+We need the IP of the wordcount service
 ```
 kubectl get services
 ```
 Now we can test the app with a curl command from our debug pod. We need to pass as a message the url containing the book containing the words that we want to count. In this case I ll pass the book Pride and prejudice.
 ```
-curl "http://{IP of the wordcount pod}:8080/?msg=http://localhost:8080/?msg=https://www.gutenberg.org/files/1342/1342-0.txt"
+curl "http://{IP of the wordcount pod}:8080/?msg=https://www.gutenberg.org/files/1342/1342-0.txt"
 ```
 log the wordcount pod
 ```
