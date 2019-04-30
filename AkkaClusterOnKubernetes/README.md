@@ -1,5 +1,5 @@
 # Akka Cluster on Kubernetes:
-Akka cluster that creates a configurable amount of master and workers to count words.
+Akka cluster that creates a configurable amount of master and workers to count the words in a book located on a url that we will pass as a parameter.
 This akka cluster can be run on a kubernetes cluster.
 
 ## How to run it on kubernetes (Minikube locally)
@@ -39,9 +39,13 @@ We also need to know the IP of the wordcount pod
 ```
 kubectl get services
 ```
-Now we can test the app with a curl command from our debug pod
+Now we can test the app with a curl command from our debug pod. We need to pass as a message the url containing the book containing the words that we want to count. In this case I ll pass the book Pride and prejudice.
 ```
-curl "http://{IP of the wordcount pod}:8080/?msg=startProcessing"
+curl "http://{IP of the wordcount pod}:8080/?msg=http://localhost:8080/?msg=https://www.gutenberg.org/files/1342/1342-0.txt"
+```
+log the wordcount pod
+```
+kubectl logs {your running wordcount pod}
 ```
 ## How to run it on kubernetes (Cloud account)
 
@@ -73,9 +77,13 @@ We need the IP of the wordcount pod
 ```
 kubectl get services
 ```
-Now we can test the app with a curl command
+Now we can test the app with a curl command from our debug pod. We need to pass as a message the url containing the book containing the words that we want to count. In this case I ll pass the book Pride and prejudice.
 ```
-curl "http://{IP of the wordcount pod}:8080/?msg=startProcessing"
+curl "http://{IP of the wordcount pod}:8080/?msg=http://localhost:8080/?msg=https://www.gutenberg.org/files/1342/1342-0.txt"
+```
+log the wordcount pod
+```
+kubectl logs {your running wordcount pod}
 ```
 ## Author
 * **Antonio Maldonado**

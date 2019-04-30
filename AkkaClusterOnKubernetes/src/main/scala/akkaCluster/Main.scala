@@ -11,7 +11,9 @@ import akka.stream.ActorMaterializer
 import akka.util.Timeout
 import WordCounter.JobRequest
 import com.typesafe.config.ConfigFactory
-
+import java.net._
+import java.io._
+import scala.collection.mutable.ArrayBuffer
 import scala.concurrent.duration._
 
 object SimpleClusterApp extends App {
@@ -31,51 +33,23 @@ object SimpleClusterApp extends App {
   }
 
   if (cluster.selfRoles.contains("master")) {
-
-    val workerRouter = system.actorOf(
-      ClusterRouterGroup(
-        RoundRobinGroup(Nil),
-        ClusterRouterGroupSettings(
-          totalInstances = 1000,
-          routeesPaths = List("/user/worker"),
-          allowLocalRoutees = true,
-          useRole = Some("worker")
-        )
-      ).props(),
-      name = "workerRouter")
-
+    val workerRouter = createRouter("workerRouter", "worker", "/user/worker")
     system.actorOf(Master.props(workerRouter), name = "master")
-
   }
 
-    if (cluster.selfRoles.contains("wordcount")) {
-    val counterRouter = system.actorOf(
-      ClusterRouterGroup(
-        RoundRobinGroup(Nil),
-        ClusterRouterGroupSettings(
-          totalInstances = 1000,
-          routeesPaths = List("/user/master"),
-          allowLocalRoutees = true,
-          useRole = Some("master")
-        )
-      ).props(),
-      name = "masterRouter")
-
+  if (cluster.selfRoles.contains("wordcount")) {
+    val counterRouter = createRouter("masterRouter", "master", "/user/master")
     val wordCounter = system.actorOf(WordCounter.props(counterRouter), name = "wordcount")
 
     val route =
       path("") {
         get {
-          parameter("msg") { (message) =>
-
-            // TODO read the msg from a post
-            val lines = List("haha kkeek fjfjf", "sdfsd dfdf  haha")
+          parameter("msg") { (url) =>
+            val lines = read(url)
             val linesPerJob = 20
-
             implicit val timeout: Timeout = 1.second
             wordCounter ? JobRequest("Job", lines, linesPerJob)
             complete("ok")
-
           }
         }
       } ~ path("health") {
@@ -91,6 +65,36 @@ object SimpleClusterApp extends App {
         .flatMap(_.unbind())
     })
 
+  }
+
+  private def createRouter(routerName: String, role: String, routeesPath: String) = {
+    system.actorOf(
+      ClusterRouterGroup(
+        RoundRobinGroup(Nil),
+        ClusterRouterGroupSettings(
+          totalInstances = 1000,
+          routeesPaths = List(routeesPath),
+          allowLocalRoutees = true,
+          useRole = Some(role)
+        )
+      ).props(),
+      name = routerName)
+  }
+
+  def read(urlStr:String):List[String] = {
+    val url = new URL(urlStr)
+    val in = new BufferedReader(new InputStreamReader(url.openStream))
+    val buffer = new ArrayBuffer[String]()
+    var inputLine = in.readLine
+    while (inputLine != null) {
+      if (!inputLine.trim.equals("")) {
+        buffer += inputLine.trim
+      }
+      inputLine = in.readLine
+    }
+    in.close
+
+    buffer.toList
   }
 
 }
