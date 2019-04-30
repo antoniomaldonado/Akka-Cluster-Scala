@@ -31,13 +31,17 @@ kubectl apply -f kubernetes/wordcount.yaml
 ```
 ***Test the app***
 
-We need the Ip of the wordcount pod
+We don't have a external IP to curl minikube by default but thre is a easy workaround, we can create a debug container with the following command to curl our app from this debug pod
+```
+kubectl run bounce --image=freakymaster/debug -it bash
+```
+We also need to know the IP of the wordcount pod
 ```
 kubectl get services
 ```
-Now we can test the app with a curl command
+Now we can test the app with a curl command from our debug pod
 ```
-curl "http://{ip of the wordcount pod}:8080/?msg=startProcessing"
+curl "http://{IP of the wordcount pod}:8080/?msg=startProcessing"
 ```
 ## How to run it on kubernetes (Cloud account)
 
@@ -48,7 +52,13 @@ Follow the same steps 1 and 2
 ```
 gcloud container clusters create {lowercase only name of your cluster} --num-nodes=4
 ```
-***Step 4: Deploy your application***
+
+***Step 4: Expose an external IP***
+
+***(TODO)***
+Creating a Service of type NodePort or LoadBalancer
+
+***Step 5: Deploy your application***
 - Deploy etcd
 ```
 kubectl apply -f kubernetes/etcd.yaml
@@ -59,13 +69,13 @@ kubectl apply -f kubernetes/wordcount.yaml
 ```
 ***Test the app***
 
-We need the Ip of the wordcount pod
+We need the IP of the wordcount pod
 ```
 kubectl get services
 ```
 Now we can test the app with a curl command
 ```
-curl "http://{ip of the wordcount pod}:8080/?msg=startProcessing"
+curl "http://{IP of the wordcount pod}:8080/?msg=startProcessing"
 ```
 ## Author
 * **Antonio Maldonado**
